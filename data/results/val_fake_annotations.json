@@ -1,0 +1,313 @@
+{
+  "info" : {
+    "description" : "This is v2.0 of the VQA dataset.",
+    "url" : "http://visualqa.org",
+    "version" : "2.0",
+    "year" : 2017,
+    "contributor" : "VQA Team",
+    "date_created" : "2017-04-26 17:00:44"
+  },
+  "license" : {
+    "url" : "http://creativecommons.org/licenses/by/4.0/",
+    "name" : "Creative Commons Attribution 4.0 International License"
+  },
+  "data_subtype" : "val2014",
+  "annotations" : [
+    {
+      "answer_type" : "other",
+      "multiple_choice_answer" : "looking in fridge",
+      "answers" : [
+        {
+          "answer" : "looking in fridge",
+          "answer_confidence" : "yes",
+          "answer_id" : 1
+        },
+        {
+          "answer" : "searching",
+          "answer_confidence" : "maybe",
+          "answer_id" : 2
+        },
+        {
+          "answer" : "looking",
+          "answer_confidence" : "yes",
+          "answer_id" : 3
+        },
+        {
+          "answer" : "looking",
+          "answer_confidence" : "maybe",
+          "answer_id" : 4
+        },
+        {
+          "answer" : "looking in fridge",
+          "answer_confidence" : "maybe",
+          "answer_id" : 5
+        },
+        {
+          "answer" : "looking in fridge",
+          "answer_confidence" : "yes",
+          "answer_id" : 6
+        },
+        {
+          "answer" : "looking in fridge",
+          "answer_confidence" : "yes",
+          "answer_id" : 7
+        },
+        {
+          "answer" : "raiding refrigerator",
+          "answer_confidence" : "yes",
+          "answer_id" : 8
+        },
+        {
+          "answer" : "getting food",
+          "answer_confidence" : "yes",
+          "answer_id" : 9
+        },
+        {
+          "answer" : "looking for food",
+          "answer_confidence" : "yes",
+          "answer_id" : 10
+        }
+      ],
+      "image_id" : 425226,
+      "question_type" : "what is the",
+      "question_id" : 425226003
+    },
+    {
+      "answer_type" : "other",
+      "multiple_choice_answer" : "african",
+      "answers" : [
+        {
+          "answer" : "african",
+          "answer_confidence" : "maybe",
+          "answer_id" : 1
+        },
+        {
+          "answer" : "gray",
+          "answer_confidence" : "yes",
+          "answer_id" : 2
+        },
+        {
+          "answer" : "african elephant",
+          "answer_confidence" : "yes",
+          "answer_id" : 3
+        },
+        {
+          "answer" : "gray",
+          "answer_confidence" : "yes",
+          "answer_id" : 4
+        },
+        {
+          "answer" : "african",
+          "answer_confidence" : "yes",
+          "answer_id" : 5
+        },
+        {
+          "answer" : "african",
+          "answer_confidence" : "maybe",
+          "answer_id" : 6
+        },
+        {
+          "answer" : "indian",
+          "answer_confidence" : "yes",
+          "answer_id" : 7
+        },
+        {
+          "answer" : "shadow",
+          "answer_confidence" : "yes",
+          "answer_id" : 8
+        },
+        {
+          "answer" : "elephas maximus",
+          "answer_confidence" : "maybe",
+          "answer_id" : 9
+        },
+        {
+          "answer" : "african",
+          "answer_confidence" : "maybe",
+          "answer_id" : 10
+        }
+      ],
+      "image_id" : 17282,
+      "question_type" : "what",
+      "question_id" : 17282002
+    },
+    {
+      "answer_type" : "other",
+      "multiple_choice_answer" : "green",
+      "answers" : [
+        {
+          "answer" : "green",
+          "answer_confidence" : "yes",
+          "answer_id" : 1
+        },
+        {
+          "answer" : "green",
+          "answer_confidence" : "yes",
+          "answer_id" : 2
+        },
+        {
+          "answer" : "lime",
+          "answer_confidence" : "yes",
+          "answer_id" : 3
+        },
+        {
+          "answer" : "green",
+          "answer_confidence" : "yes",
+          "answer_id" : 4
+        },
+        {
+          "answer" : "gray",
+          "answer_confidence" : "yes",
+          "answer_id" : 5
+        },
+        {
+          "answer" : "brown",
+          "answer_confidence" : "yes",
+          "answer_id" : 6
+        },
+        {
+          "answer" : "green",
+          "answer_confidence" : "yes",
+          "answer_id" : 7
+        },
+        {
+          "answer" : "green",
+          "answer_confidence" : "yes",
+          "answer_id" : 8
+        },
+        {
+          "answer" : "brown",
+          "answer_confidence" : "yes",
+          "answer_id" : 9
+        },
+        {
+          "answer" : "gray",
+          "answer_confidence" : "yes",
+          "answer_id" : 10
+        }
+      ],
+      "image_id" : 197840,
+      "question_type" : "what color are the",
+      "question_id" : 197840001
+    },
+    {
+      "question_type" : "none of the above",
+      "multiple_choice_answer" : "no",
+      "answers" : [
+        {
+          "answer" : "no",
+          "answer_confidence" : "yes",
+          "answer_id" : 1
+        },
+        {
+          "answer" : "no",
+          "answer_confidence" : "yes",
+          "answer_id" : 2
+        },
+        {
+          "answer" : "no",
+          "answer_confidence" : "yes",
+          "answer_id" : 3
+        },
+        {
+          "answer" : "no",
+          "answer_confidence" : "yes",
+          "answer_id" : 4
+        },
+        {
+          "answer" : "no",
+          "answer_confidence" : "yes",
+          "answer_id" : 5
+        },
+        {
+          "answer" : "no",
+          "answer_confidence" : "maybe",
+          "answer_id" : 6
+        },
+        {
+          "answer" : "no",
+          "answer_confidence" : "yes",
+          "answer_id" : 7
+        },
+        {
+          "answer" : "no",
+          "answer_confidence" : "yes",
+          "answer_id" : 8
+        },
+        {
+          "answer" : "no",
+          "answer_confidence" : "maybe",
+          "answer_id" : 9
+        },
+        {
+          "answer" : "no",
+          "answer_confidence" : "maybe",
+          "answer_id" : 10
+        }
+      ],
+      "image_id" : 153486,
+      "answer_type" : "yes/no",
+      "question_id" : 153486002
+    },
+    {
+      "answer_type" : "other",
+      "multiple_choice_answer" : "crab",
+      "answers" : [
+        {
+          "answer" : "crab, mayo, pepper",
+          "answer_confidence" : "maybe",
+          "answer_id" : 1
+        },
+        {
+          "answer" : "lobster",
+          "answer_confidence" : "maybe",
+          "answer_id" : 2
+        },
+        {
+          "answer" : "crab",
+          "answer_confidence" : "yes",
+          "answer_id" : 3
+        },
+        {
+          "answer" : "lobster",
+          "answer_confidence" : "maybe",
+          "answer_id" : 4
+        },
+        {
+          "answer" : "chicken salad",
+          "answer_confidence" : "maybe",
+          "answer_id" : 5
+        },
+        {
+          "answer" : "tomato",
+          "answer_confidence" : "yes",
+          "answer_id" : 6
+        },
+        {
+          "answer" : "chicken and tomatoes",
+          "answer_confidence" : "yes",
+          "answer_id" : 7
+        },
+        {
+          "answer" : "crab and mayo",
+          "answer_confidence" : "yes",
+          "answer_id" : 8
+        },
+        {
+          "answer" : "crab",
+          "answer_confidence" : "maybe",
+          "answer_id" : 9
+        },
+        {
+          "answer" : "crab",
+          "answer_confidence" : "maybe",
+          "answer_id" : 10
+        }
+      ],
+      "image_id" : 549971,
+      "question_type" : "what",
+      "question_id" : 549971002
+    }
+  ],
+  "data_type" : "mscoco"
+}
