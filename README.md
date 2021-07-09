@@ -37,8 +37,7 @@ Get the VQA dataset from [here](https://drive.google.com/open?id=1_VvBqqxPW_5HQx
 
 into the repository directory `data/`.
 
-
-Then, clean up your dataset (there are some images whose ids are referenced in the annotation & question files, while the images themselves don't exist!) with:
+Prepare your dataset with:
 
 ```bash
 # Only run the following command once!
@@ -62,7 +61,12 @@ mv questions/test.json questions/test_backup.json
 mv questions/test_cleaned.json questions/test.json
 ```
 
-Preprocess the images with:
+The scripts upon would
+
+* clean up your dataset (there are some images whose ids are referenced in the annotation & question files, while the images themselves don't exist!)
+* align the questions' ids for convenience while training
+
+**Preprocess the images** with:
 
 ```bash
 python preprocess-images.py
@@ -73,10 +77,28 @@ python preprocess-images.py
 
 The output should be `./resnet-14x14.h5`.
 
-Preprocess the questions and annotations to get their vocabularies with:
+**Preprocess the questions and annotations** to get their vocabularies with:
 
 ```bash
 python preprocess-vocab.py
 ```
 
 The output should be `./vocab.json`.
+
+Now, you can **train the model** with:
+
+```bash
+python train.py
+```
+
+During training, **view the training process** with:
+
+```bash
+python view-log.py <path to .pth log>
+```
+
+The output `val_acc.png` should look like this:
+
+![](./val_acc.png)
+
+### Acknowledge
