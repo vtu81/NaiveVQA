@@ -44,7 +44,7 @@ def run(net, loader, optimizer, tracker, train=False, prefix='', epoch=0):
     log_softmax = nn.LogSoftmax(dim=0).cuda()
     for v, q, a, idx, q_len in tq:
         var_params = {
-            'volatile': not train,
+            # 'volatile': not train,
             'requires_grad': False,
         }
         v = Variable(v.cuda(non_blocking=True), **var_params)
@@ -102,6 +102,10 @@ def main():
     val_loader = data.get_loader(val=True)
 
     net = nn.DataParallel(model.Net(train_loader.dataset.num_tokens)).cuda()
+    pretrained = False
+    if pretrained == True:
+        log = torch.load('logs/2021-07-09_16:09:09.pth')
+        net.load_state_dict(log['weights'])
     optimizer = optim.Adam([p for p in net.parameters() if p.requires_grad])
 
     tracker = utils.Tracker()

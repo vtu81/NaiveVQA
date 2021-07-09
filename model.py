@@ -90,6 +90,7 @@ class TextProcessor(nn.Module):
             init.xavier_uniform_(w)
 
     def forward(self, q, q_len):
+        self.lstm.flatten_parameters() # added to remove warning
         embedded = self.embedding(q)
         tanhed = self.tanh(self.drop(embedded))
         packed = pack_padded_sequence(tanhed, q_len, batch_first=True)
