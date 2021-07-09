@@ -1,12 +1,6 @@
 """
 Clean up questions and annotations without images!
 """
-import sys
-sys.path.insert(0, '../PythonHelperTools/vqaTools')
-from vqa import VQA
-import random
-import skimage.io as io
-import matplotlib.pyplot as plt
 import os
 
 dataDir		='.'
