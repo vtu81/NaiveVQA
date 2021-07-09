@@ -9,7 +9,12 @@
     * `results/` -- now contains only a fake results, for evaluation demo at `PythonEvaluationTools/vqaEvalDemo.py`
     * `clean.py` -- a script to clean up `train.json` in both `data/annotations/` and `data/questions/`
 * `resnet/` -- resnet directory
+* `logs/` -- should contain saved `.pth` model files
 * `config.py` -- global configure file
+* `train.py` -- training
+* `view-log.py` -- a tool for visualizing an accuracy\epoch figure
+* `val_acc.png` -- a demo for the accuracy\epoch figure
+* `model.py` -- the major model
 * `preprocess-image.py` -- preprocess the images, using ResNet152 to extract features for further usages
 * `preprocess-vocab.py` -- preprocess the questions and annotations to get their vocabularies for further usages
 * `data.py` -- dataset, dataloader and data processing code
@@ -24,7 +29,7 @@
 
 ### Prerequisite
 
-* Disk avaiable storage at least 60GB
+* Disk with available storage of at least 60GB
 * A piece of Nivida GPU
 
 ### Quick Begin
@@ -101,4 +106,6 @@ The output `val_acc.png` should look like this:
 
 ![](./val_acc.png)
 
-### Acknowledge
+### Acknowledgement
+
+The current version of codes are mostly borrowed from repository [pytorch-vqa](https://github.com/Cyanogenoid/pytorch-vqa).
