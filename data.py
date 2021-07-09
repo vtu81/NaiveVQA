@@ -101,7 +101,7 @@ class VQA(data.Dataset):
         """ Create a list of indices into questions that will have at least one answer that is in the vocab """
         answerable = []
         for i, answers in enumerate(self.answers):
-            answer_has_index = len(answers.nonzero()) > 0
+            answer_has_index = len(torch.nonzero(answers, as_tuple = False)) > 0
             # store the indices of anything that is answerable
             if answer_has_index:
                 answerable.append(i)
