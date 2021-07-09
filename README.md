@@ -41,14 +41,25 @@ into the repository directory `data/`.
 Then, clean up your dataset (there are some images whose ids are referenced in the annotation & question files, while the images themselves don't exist!) with:
 
 ```bash
+# Only run the following command once!
+
 cd data
 python clean.py # run the clean up script
+python align.py # run the aligning script
 
 mv annotations/train.json annotations/train_backup.json
 mv annotations/train_cleaned.json annotations/train.json
+mv annotations/val.json annotations/val_backup.json
+mv annotations/val_cleaned.json annotations/val.json
+mv annotations/test.json annotations/test_backup.json
+mv annotations/test_cleaned.json annotations/test.json
 
 mv questions/train.json questions/train_backup.json
 mv questions/train_cleaned.json questions/train.json
+mv questions/val.json questions/val_backup.json
+mv questions/val_cleaned.json questions/val.json
+mv questions/test.json questions/test_backup.json
+mv questions/test_cleaned.json questions/test.json
 ```
 
 Preprocess the images with:
