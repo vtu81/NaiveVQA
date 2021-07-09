@@ -5,3 +5,4 @@ data/images
 __pycache__
 resnet-14x14.h5
 vocab.json
+*.pth
