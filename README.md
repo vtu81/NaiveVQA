@@ -19,6 +19,9 @@
 * `preprocess-vocab.py` -- preprocess the questions and annotations to get their vocabularies for further usages
 * `data.py` -- dataset, dataloader and data processing code
 * `utils.py` -- helper code
+* `evaluate.ipynb` -- evaluate a model and visualize the result
+* `finetune.ipynb` -- finetune a pretrained model
+* `cover_rate.ipynb` -- calculate the selected answers' coverage
 * `PythonHelperTools/` (currently not used)
     * `vqaDemo.py` -- a demo for VQA dataset APIs
     * `vqaTools/`
@@ -105,6 +108,12 @@ python view-log.py <path to .pth log>
 The output `val_acc.png` should look like this:
 
 ![](./val_acc.png)
+
+### More Things
+
+* To evaluate a trained model, check `evaluate.ipynb`.
+* To finetune a pretrained model, check `finetune.ipynb`.
+* To calculate the selected answers' cover rate (determined by `config.max_answer`), check `cover_rate.ipynb`.
 
 ### Acknowledgement
 
