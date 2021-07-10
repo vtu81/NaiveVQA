@@ -42,16 +42,16 @@ def main():
 
     print("Questions' vocabulary size: ", len(question_vocab))
     print("Top 5 words in questions:")
-    for index, word in enumerate(question_vocab):
+    for (word, index) in question_vocab.items():
         print("\'{}\'\tid: {}".format(word, index))
         if index > 4: break; 
 
     print("Answers' vocabulary size: ", len(answer_vocab))
 
     print("Top 5 answers:")
-    for index, word in enumerate(answer_vocab):
+    for (word, index) in answer_vocab.items():
         print("\'{}\'\tid: {}".format(word, index))
-        if index > 4: break; 
+        if index > 3: break;
 
     vocabs = {
         'question': question_vocab,
