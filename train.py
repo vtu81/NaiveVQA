@@ -102,9 +102,9 @@ def main():
     val_loader = data.get_loader(val=True)
 
     net = nn.DataParallel(model.Net(train_loader.dataset.num_tokens)).cuda()
-    pretrained = False
-    if pretrained == True:
-        log = torch.load('logs/2021-07-09_16:09:09.pth')
+    if config.pretrained:
+        log = torch.load(config.pretrained_model_path)
+        if log is not None: print("Successfully loaded pretrained model from {}.".format(config.pretrained_model_path))
         net.load_state_dict(log['weights'])
     optimizer = optim.Adam([p for p in net.parameters() if p.requires_grad])
 
