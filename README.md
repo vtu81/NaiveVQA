@@ -51,21 +51,26 @@ Prepare your dataset with:
 # Only run the following command once!
 
 cd data
-python clean.py # run the clean up script
-python align.py # run the aligning script
 
-mv annotations/train.json annotations/train_backup.json
+# Save the original json files
+cp annotations/train.json annotations/train_backup.json
+cp questions/train.json questions/train_backup.json
+cp annotations/val.json annotations/val_backup.json
+cp questions/val.json questions/val_backup.json
+cp annotations/test.json annotations/test_backup.json
+cp questions/test.json questions/test_backup.json
+
+python clean.py # run the clean up script
 mv annotations/train_cleaned.json annotations/train.json
-mv annotations/val.json annotations/val_backup.json
+mv questions/train_cleaned.json questions/train.json
+
+python align.py # run the aligning script
+mv annotations/train_cleaned.json annotations/train.json
 mv annotations/val_cleaned.json annotations/val.json
-mv annotations/test.json annotations/test_backup.json
 mv annotations/test_cleaned.json annotations/test.json
 
-mv questions/train.json questions/train_backup.json
 mv questions/train_cleaned.json questions/train.json
-mv questions/val.json questions/val_backup.json
 mv questions/val_cleaned.json questions/val.json
-mv questions/test.json questions/test_backup.json
 mv questions/test_cleaned.json questions/test.json
 ```
 
