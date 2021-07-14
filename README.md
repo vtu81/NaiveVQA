@@ -1,8 +1,8 @@
-# NaiveVQA -- PyTorch Implementation
+# NaiveVQA -- Mindspore Implementation
 
-This repository contains a naive VQA model, which is our final project (**pytorch** implementation) for course DL4NLP at ZJU. It's a reimplementation of the paper [Show, Ask, Attend, and Answer: A Strong Baseline For Visual Question Answering](https://arxiv.org/abs/1704.03162). Most codes on this branch are borrowed from repository [pytorch-vqa](https://github.com/Cyanogenoid/pytorch-vqa).
+This repository contains a naive VQA model, which is our final project (**mindspore** implementation) for course DL4NLP at ZJU. It's a reimplementation of the paper [Show, Ask, Attend, and Answer: A Strong Baseline For Visual Question Answering](https://arxiv.org/abs/1704.03162).
 
-> Checkout branch `mindspore` for our **mindspore** implementation.
+> Checkout branch `pytorch` for our **pytorch** implementation.
 
 ### File Directory
 
@@ -126,4 +126,4 @@ The output `val_acc.png` should look like this:
 
 ### Acknowledgement
 
-The current version of codes are mostly borrowed from repository [pytorch-vqa](https://github.com/Cyanogenoid/pytorch-vqa).
+The current version of codes are translated from `pytorch` branch, where most codes are borrowed from repository [pytorch-vqa](https://github.com/Cyanogenoid/pytorch-vqa).

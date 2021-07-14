@@ -1,13 +1,11 @@
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.nn.init as init
-from torch.nn.utils.rnn import pack_padded_sequence
-
+import numpy as np
+import mindspore
+from mindspore import nn, Tensor
+from mindspore import ops as P
+import mindspore.common.initializer as init
 import config
 
-
-class Net(nn.Module):
+class Net(nn.Cell):
     """ Re-implementation of ``Show, Ask, Attend, and Answer: A Strong Baseline For Visual Question Answering'' [0]
 
     [0]: https://arxiv.org/abs/1704.03162
@@ -38,77 +36,55 @@ class Net(nn.Module):
             out_features=config.max_answers,
             drop=0.5,
         )
+        self.cat = P.Concat(axis=1)
+        self.norm = nn.Norm(axis=1, keep_dims=True)
 
-        for m in self.modules():
-            if isinstance(m, nn.Linear) or isinstance(m, nn.Conv2d):
-                init.xavier_uniform_(m.weight)
-                if m.bias is not None:
-                    m.bias.data.zero_()
+    def construct(self, v, q, q_len):
+        q = self.text(q, q_len)
 
-    def forward(self, v, q, q_len):
-        q = self.text(q, list(q_len.data))
-
-        v = v / (v.norm(p=2, dim=1, keepdim=True).expand_as(v) + 1e-8)
+        v = v / (self.norm(v).expand_as(v) + 1e-8)
         a = self.attention(v, q)
         v = apply_attention(v, a)
-
-        combined = torch.cat([v, q], dim=1)
+        combined = self.cat((v, q))
+        print(combined.shape)
         answer = self.classifier(combined)
         return answer
 
 
-class Classifier(nn.Sequential):
-    def __init__(self, in_features, mid_features, out_features, drop=0.0):
-        super(Classifier, self).__init__()
-        self.add_module('drop1', nn.Dropout(drop))
-        self.add_module('lin1', nn.Linear(in_features, mid_features))
-        self.add_module('relu', nn.ReLU())
-        self.add_module('drop2', nn.Dropout(drop))
-        self.add_module('lin2', nn.Linear(mid_features, out_features))
-
-
-class TextProcessor(nn.Module):
+class TextProcessor(nn.Cell):
     def __init__(self, embedding_tokens, embedding_features, lstm_features, drop=0.0):
         super(TextProcessor, self).__init__()
         self.embedding = nn.Embedding(embedding_tokens, embedding_features, padding_idx=0)
-        self.drop = nn.Dropout(drop)
+        self.drop = nn.Dropout(keep_prob=1 - drop)
         self.tanh = nn.Tanh()
         self.lstm = nn.LSTM(input_size=embedding_features,
                             hidden_size=lstm_features,
-                            num_layers=1)
+                            num_layers=1,
+                            batch_first=True)
         self.features = lstm_features
-
-        self._init_lstm(self.lstm.weight_ih_l0)
-        self._init_lstm(self.lstm.weight_hh_l0)
-        self.lstm.bias_ih_l0.data.zero_()
-        self.lstm.bias_hh_l0.data.zero_()
-
-        init.xavier_uniform_(self.embedding.weight)
-
-    def _init_lstm(self, weight):
-        for w in weight.chunk(4, 0):
-            init.xavier_uniform_(w)
-
-    def forward(self, q, q_len):
-        self.lstm.flatten_parameters() # added to remove warning
+    def construct(self, q, q_len):
         embedded = self.embedding(q)
         tanhed = self.tanh(self.drop(embedded))
-        packed = pack_padded_sequence(tanhed, q_len, batch_first=True)
-        _, (_, c) = self.lstm(packed)
-        return c.squeeze(0)
+
+        h0 = Tensor(np.ones([1, q.shape[0], self.features]).astype(np.float32))
+        c0 = Tensor(np.ones([1, q.shape[0], self.features]).astype(np.float32))
+        
+        _, (_, c) = self.lstm(tanhed, (h0, c0))
+
+        return c.squeeze(0) # only supported from 1.2.x
 
 
-class Attention(nn.Module):
+class Attention(nn.Cell):
     def __init__(self, v_features, q_features, mid_features, glimpses, drop=0.0):
         super(Attention, self).__init__()
-        self.v_conv = nn.Conv2d(v_features, mid_features, 1, bias=False)  # let self.lin take care of bias
-        self.q_lin = nn.Linear(q_features, mid_features)
+        self.v_conv = nn.Conv2d(v_features, mid_features, 1, has_bias=False)  # let self.lin take care of bias
+        self.q_lin = nn.Dense(q_features, mid_features)
         self.x_conv = nn.Conv2d(mid_features, glimpses, 1)
 
-        self.drop = nn.Dropout(drop)
-        self.relu = nn.ReLU(inplace=True)
+        self.drop = nn.Dropout(1 - drop)
+        self.relu = nn.ReLU()
 
-    def forward(self, v, q):
+    def construct(self, v, q):
         v = self.v_conv(self.drop(v))
         q = self.q_lin(self.drop(q))
         q = tile_2d_over_nd(q, v)
@@ -117,17 +93,32 @@ class Attention(nn.Module):
         return x
 
 
+class Classifier(nn.SequentialCell):
+    def __init__(self, in_features, mid_features, out_features, drop=0.0):
+        super(Classifier, self).__init__()
+        self.insert_child_to_cell('drop1', nn.Dropout(keep_prob=1 - drop))
+        self.insert_child_to_cell('lin1', nn.Dense(in_features, mid_features))
+        self.insert_child_to_cell('relu', nn.ReLU())
+        self.insert_child_to_cell('drop2', nn.Dropout(keep_prob=1 - drop))
+        self.insert_child_to_cell('lin2', nn.Dense(mid_features, out_features))
+        self.cell_list = list(self._cells.values())
+
+
 def apply_attention(input, attention):
     """ Apply any number of attention maps over the input. """
-    n, c = input.size()[:2]
-    glimpses = attention.size(1)
+    softmax = P.Softmax(axis=-1)
+    unsqueeze = P.ExpandDims()
+    reduce_sum = P.ReduceSum()
+
+    n, c = input.shape[:2]
+    glimpses = attention.shape[1]
 
     # flatten the spatial dims into the third dim, since we don't need to care about how they are arranged
     input = input.view(n, 1, c, -1) # [n, 1, c, s]
     attention = attention.view(n, glimpses, -1)
-    attention = F.softmax(attention, dim=-1).unsqueeze(2) # [n, g, 1, s]
+    attention = unsqueeze(softmax(attention), 2) # [n, g, 1, s]
     weighted = attention * input # [n, g, v, s]
-    weighted_mean = weighted.sum(dim=-1) # [n, g, v]
+    weighted_mean = reduce_sum(weighted, -1) # [n, g, v]
     return weighted_mean.view(n, -1)
 
 
@@ -135,7 +126,7 @@ def tile_2d_over_nd(feature_vector, feature_map):
     """ Repeat the same feature vector over all spatial positions of a given feature map.
         The feature vector should have the same batch size and number of features as the feature map.
     """
-    n, c = feature_vector.size()
+    n, c = feature_vector.shape
     spatial_size = feature_map.dim() - 2
     tiled = feature_vector.view(n, c, *([1] * spatial_size)).expand_as(feature_map)
     return tiled
