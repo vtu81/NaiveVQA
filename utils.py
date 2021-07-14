@@ -1,8 +1,8 @@
 import os
 import json
 
-import mindspore.dataset.vision.py_transforms as transforms
-from mindspore.dataset.transforms.py_transforms import Compose
+import mindspore.nn as nn
+import mindspore.dataset.transforms as transforms
 
 import config
 
@@ -125,7 +125,7 @@ class Tracker:
 
 
 def get_transform(target_size, central_fraction=1.0):
-    return Compose([
+    return transforms.Compose([
         transforms.Resize(int(target_size / central_fraction)),
         transforms.CenterCrop(target_size),
         transforms.ToTensor(),

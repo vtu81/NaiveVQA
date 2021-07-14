@@ -46,7 +46,6 @@ class Net(nn.Cell):
         a = self.attention(v, q)
         v = apply_attention(v, a)
         combined = self.cat((v, q))
-        print(combined.shape)
         answer = self.classifier(combined)
         return answer
 
