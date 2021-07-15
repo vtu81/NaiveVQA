@@ -1,6 +1,8 @@
 data/annotations
 data/questions
 data/images
+data/results/*.json
+logs/*.json
 *.pyc
 __pycache__
 resnet-14x14.h5
