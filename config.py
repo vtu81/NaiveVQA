@@ -26,3 +26,7 @@ initial_lr = 1e-3  # default Adam lr
 lr_halflife = 50000  # in iterations
 data_workers = 1
 max_answers = 350
+
+# context seleciton
+device = 'GPU'
+# device = 'Ascend'

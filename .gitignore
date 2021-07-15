@@ -7,3 +7,5 @@ resnet-14x14.h5
 vocab.json
 *.pth
 dump/*
+cuda_meta_*
+*.ckpt

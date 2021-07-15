@@ -12,6 +12,7 @@ from mindspore import Tensor
 from mindspore.dataset import GeneratorDataset
 import numpy as np
 import mindspore.dataset.transforms as transforms
+import mindspore.dataset.transforms.c_transforms as C
 
 import numpy as np
 
@@ -24,6 +25,10 @@ import mindspore.context as context
 def get_loader(train=False, val=False, test=False):
     """ Returns a data loader for the desired split """
     assert train + val + test == 1, 'need to set exactly one of {train, val, test} to True'
+    
+    castI = C.TypeCast(mindspore.int32)
+    castF = C.TypeCast(mindspore.float32)
+
     split = VQA(
         utils.path_for(train=train, val=val, test=test, question=True),
         utils.path_for(train=train, val=val, test=test, answer=True),
@@ -35,7 +40,11 @@ def get_loader(train=False, val=False, test=False):
         column_names=["v", "q", "a", "item", "q_length"],
         shuffle=train,
         num_parallel_workers=config.data_workers
-    ).batch(batch_size=config.batch_size)
+    )
+    loader = loader.map(operations=castF, input_columns="v")
+    loader = loader.map(operations=castI, input_columns="q")
+    loader = loader.map(operations=castI, input_columns="a")
+    loader = loader.batch(batch_size=config.batch_size)
     loader.source = split
     return loader
 

@@ -61,6 +61,7 @@ class TextProcessor(nn.Cell):
                             num_layers=1,
                             batch_first=True)
         self.features = lstm_features
+        self.squeeze = P.Squeeze(axis=0)
     def construct(self, q, q_len):
         embedded = self.embedding(q)
         tanhed = self.tanh(self.drop(embedded))
@@ -70,7 +71,8 @@ class TextProcessor(nn.Cell):
         
         _, (_, c) = self.lstm(tanhed, (h0, c0))
 
-        return c.squeeze(0) # only supported from 1.2.x
+        # return c.squeeze(0) # only supported from 1.2.x
+        return self.squeeze(c)
 
 
 class Attention(nn.Cell):
