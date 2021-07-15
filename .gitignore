@@ -1,6 +1,7 @@
 data/annotations
 data/questions
 data/images
+data/results/*.json
 logs/*.json
 *.pyc
 __pycache__
