@@ -1,9 +1,11 @@
 data/annotations
 data/questions
 data/images
+logs/*.json
 *.pyc
 __pycache__
 *.h5
 vocab.json
 *.pth
+*.ckpt
 dump/*
