@@ -58,6 +58,10 @@ git checkout pytorch
 * Free disk space of at least 60GB
 * Nvidia GPU / Ascend Platform
 
+> **Notice**: We have successfully tested our code with **MindSpore 1.2.1** on **Nvidia RTX 2080ti**. Thus we strongly suggest you use MindSpore 1.2.1 GPU version. Since MindSpore is definitely not stable, any version different from 1.2.1 might cause failures.
+
+> Also, due to some incompatibility among different versions of MindSpore, we still can't manage to run the code on Ascend now. Fortunately, people are more possible to have an Nvidia GPU rather than an Ascend chip :)
+
 ## Quick Begin
 
 ### Get and Prepare the Dataset
