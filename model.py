@@ -78,9 +78,9 @@ class TextProcessor(nn.Cell):
 class Attention(nn.Cell):
     def __init__(self, v_features, q_features, mid_features, glimpses, drop=0.0):
         super(Attention, self).__init__()
-        self.v_conv = nn.Conv2d(v_features, mid_features, 1, has_bias=False)  # let self.lin take care of bias
-        self.q_lin = nn.Dense(q_features, mid_features)
-        self.x_conv = nn.Conv2d(mid_features, glimpses, 1)
+        self.v_conv = nn.Conv2d(v_features, mid_features, 1, has_bias=False, weight_init=init.XavierUniform())  # let self.lin take care of bias
+        self.q_lin = nn.Dense(q_features, mid_features, weight_init=init.XavierUniform())
+        self.x_conv = nn.Conv2d(mid_features, glimpses, 1, weight_init=init.XavierUniform())
 
         self.drop = nn.Dropout(1 - drop)
         self.relu = nn.ReLU()
@@ -98,10 +98,10 @@ class Classifier(nn.SequentialCell):
     def __init__(self, in_features, mid_features, out_features, drop=0.0):
         super(Classifier, self).__init__()
         self.insert_child_to_cell('drop1', nn.Dropout(keep_prob=1 - drop))
-        self.insert_child_to_cell('lin1', nn.Dense(in_features, mid_features))
+        self.insert_child_to_cell('lin1', nn.Dense(in_features, mid_features, weight_init=init.XavierUniform()))
         self.insert_child_to_cell('relu', nn.ReLU())
         self.insert_child_to_cell('drop2', nn.Dropout(keep_prob=1 - drop))
-        self.insert_child_to_cell('lin2', nn.Dense(mid_features, out_features))
+        self.insert_child_to_cell('lin2', nn.Dense(mid_features, out_features, weight_init=init.XavierUniform()))
         self.cell_list = list(self._cells.values())
 
 
