@@ -135,6 +135,8 @@ python preprocess-vocab.py
 
 The output should be `./vocab.json`.
 
+### Train
+
 Now, you can **train the model** with:
 
 ```bash
