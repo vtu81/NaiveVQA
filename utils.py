@@ -1,16 +1,27 @@
 import os
 import json
 
+import mindspore
 import mindspore.nn as nn
 import mindspore.dataset.transforms as transforms
+import mindspore.ops as P
 
 import config
 
 
 def batch_accuracy(predicted, true):
     """ Compute the accuracies for a batch of predictions and answers """
-    _, predicted_index = predicted.max(dim=1, keepdim=True)
-    agreeing = true.gather(dim=1, index=predicted_index)
+    arg_max = P.Argmax(axis=1, output_type=mindspore.int32)
+    gather = P.GatherD()
+    minimum = P.Minimum()
+    unsqueeze = P.ExpandDims()
+    squeeze = P.Squeeze(1)
+
+    predicted_index = arg_max(predicted)
+    predicted_index = unsqueeze(predicted_index, 1)
+    agreeing = gather(true, 1, predicted_index)
+    agreeing = squeeze(agreeing)
+
     '''
     Acc needs to be averaged over all 10 choose 9 subsets of human answers.
     While we could just use a loop, surely this can be done more efficiently (and indeed, it can).
@@ -36,7 +47,7 @@ def batch_accuracy(predicted, true):
     Finally, we can combine all cases together with:
         min(agreeing * 0.3, 1)
     '''
-    return (agreeing * 0.3).clamp(max=1)
+    return minimum(agreeing * 0.3, 1.0)
 
 
 def path_for(train=False, val=False, test=False, question=False, answer=False):
