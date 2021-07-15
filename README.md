@@ -4,7 +4,7 @@ This repository contains a naive VQA model, which is our final project (**mindsp
 
 > Checkout branch `pytorch` for our **pytorch** implementation.
 
-### File Directory
+## File Directory
 
 * `data/`
     * `annotations/` -- annotations data (ignored)
@@ -34,14 +34,16 @@ This repository contains a naive VQA model, which is our final project (**mindsp
     * `vaqEvaluation/`
 * `README.md`
 
-### Prerequisite
+## Prerequisite
 
 * Disk with available storage of at least 60GB
 * A piece of Nivida GPU
 
-### Quick Begin
+## Quick Begin
 
-Get the VQA dataset from [here](https://drive.google.com/open?id=1_VvBqqxPW_5HQxE6alZ7_-SGwbEt2_zn). Unzip the file and move the subdirectories
+### Get and Prepare the Dataset
+
+Get our VQA dataset (a small subset of VQA 2.0) from [here](https://drive.google.com/open?id=1_VvBqqxPW_5HQxE6alZ7_-SGwbEt2_zn). Unzip the file and move the subdirectories
 
 * `annotations/`
 * `images/`
@@ -83,6 +85,10 @@ The scripts upon would
 * clean up your dataset (there are some images whose ids are referenced in the annotation & question files, while the images themselves don't exist!)
 * align the questions' ids for convenience while training
 
+### Preprocess Images
+
+> You actually don't have to preprocess the images yourself. We have prepared the prerocessed features file for you, feel free to download it through [here](https://e-share.obs-website.cn-north-1.myhuaweicloud.com?token=jA7oiibO5h2G1jmMINVC+oum3Lfah+Ut5bGgDFeTu5sI4zchCijmfATwP8KLRi9T5n7q00BW/bs2ugmV6RsBjmPdOUWaQEBJ0Fm0ND9DIrBCRfNNYmqbIH+Q2J0VgDY70KEHNOK3GW+0179M5NphG9YUSz9+JT3f4G3Jx4MLo6zky+l2nB6VdYLBxGspSx98Iq566+3aRL7NFJ/KbSRtUesX9iHSFJaFyBNNeyflZyzTQOmvs+xK17NWIeeJ7zdTuk/ojRn157m0m8uNzKg8+KQawvp53i/4y6kZ1qMh/ryBfjHsKIP18vz6OD0htixD66E/lr450IxpQHzqWp35Lixr8pptgrtBE4aWkcsvjTpupOfZdnqSzLY91QzCqU2578RDctILAb8mpvURWd7im2yUZUexBCsdCzp4HHUL1H3+C6UCTPe7XMDtz4yWhsZFATstbIHs6opMs3Ktp5/6HfA976nJJeJZnjLQp8NxwTVAoPUsckIxwFplhCIkpE38IrBq6mndpEP8G0VHLIKzYfDn6pS83JNzl4EPxknKkNL22OyWAge3ZC+Gh1mqrvCq) (the passcode is 'dl4nlp'). You should download the `resnet-14x14.h5` (42GB) file and place it at the repository root directory. Once you've done that, skip this chapter!
+
 **Preprocess the images** with:
 
 ```bash
@@ -93,6 +99,10 @@ python preprocess-images.py
 * If you run out of CUDA memory, tune down `preprocess_batch_size` ata `config.json`
 
 The output should be `./resnet-14x14.h5`.
+
+### Preprocess Vocabulary
+
+> The vocabulary only depends on the **train** set, as well as the `config.max_answers` (the number of selected candidate answers) you choose.
 
 **Preprocess the questions and annotations** to get their vocabularies with:
 
@@ -111,19 +121,22 @@ python train.py
 During training, **view the training process** with:
 
 ```bash
-python view-log.py <path to .pth log>
+python view-log.py <path to train record json>
 ```
 
 The output `val_acc.png` should look like this:
 
 ![](./val_acc.png)
 
-### More Things
+## Test Your Model
 
-* To evaluate a trained model, check `evaluate.ipynb`.
-* To finetune a pretrained model, check `finetune.ipynb`.
-* To calculate the selected answers' cover rate (determined by `config.max_answer`), check `cover_rate.ipynb`.
+We provide `evaluatie.ipynb` to test/evaluate the model. Open the notebook, and set the correct `eval_config`, you're good to go! Just run the following cell one by one, you should be able to **visualize the performance** of your trained model.
 
-### Acknowledgement
 
-The current version of codes are translated from `pytorch` branch, where most codes are borrowed from repository [pytorch-vqa](https://github.com/Cyanogenoid/pytorch-vqa).
+## More Things
+
+* To calculate the selected answers' cover rate (determined by `config.max_answers`), check `cover_rate.ipynb`.
+
+## Acknowledgement
+
+The current version of codes are translated from `pytorch` branch, where some codes are borrowed from repository [pytorch-vqa](https://github.com/Cyanogenoid/pytorch-vqa).

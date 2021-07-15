@@ -5,7 +5,7 @@ data/results/*.json
 logs/*.json
 *.pyc
 __pycache__
-resnet-14x14.h5
+*.h5
 vocab.json
 *.pth
 dump/*
