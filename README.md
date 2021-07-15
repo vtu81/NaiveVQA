@@ -49,7 +49,7 @@ This repository contains a naive VQA model, which is our final project (**pytorc
 ### Prerequisite
 
 * Free disk space of at least 60GB
-* Nvida GPU
+* Nvidia GPU
 
 ## Quick Begin
 
