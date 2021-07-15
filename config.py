@@ -20,7 +20,7 @@ central_fraction = 0.875  # only take this much of the centre when scaling and c
 # training config
 pretrained = False # set to true to continue training with a checkpoint or a pretrained model
 pretrained_model_path = 'logs/2021-07-10_13:44:34.pth' # your pretrained model path
-epochs = 50
+epochs = 30
 batch_size = 128
 initial_lr = 1e-3  # default Adam lr
 lr_halflife = 50000  # in iterations

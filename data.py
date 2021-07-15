@@ -44,6 +44,8 @@ def get_loader(train=False, val=False, test=False):
     loader = loader.map(operations=castF, input_columns="v")
     loader = loader.map(operations=castI, input_columns="q")
     loader = loader.map(operations=castI, input_columns="a")
+    loader = loader.map(operations=castI, input_columns="item")
+    loader = loader.map(operations=castI, input_columns="q_length")
     loader = loader.batch(batch_size=config.batch_size)
     loader.source = split
     return loader
@@ -160,7 +162,7 @@ class VQA:
         # since batches are re-ordered for PackedSequence's, the original question order is lost
         # we return `item` so that the order of (v, q, a) triples can be restored if desired
         # without shuffling in the dataloader, these will be in the order that they appear in the q and a json's.
-        return v.astype(np.float32), q.astype(np.int64), a.astype(np.float32), item, q_length
+        return v.astype(np.float32), q.astype(np.int32), a.astype(np.float32), item, q_length
         
     
     def __len__(self):
