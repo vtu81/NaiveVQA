@@ -4,14 +4,22 @@ This repository contains a naive VQA model, which is our final project (**mindsp
 
 > Checkout branch `pytorch` for our **pytorch** implementation.
 
+```bash
+git checkout pytorch
+```
+
 ## Performance
 
 | Framework | Y/N  | Num  | Other | All  |
 | --------- | ---- | ---- | ----- | ---- |
-| **MindSpore** | **62.2** | **7.5**  | **2.4**   | **25.8** |
-| PyTorch   | 66.3 | 24.5 | 25.0  | 40.6 |
+| **MindSpore** | 62.2 | 7.5  | 2.4  | **25.8** |
+| **PyTorch**   | 66.3 | 24.5 | 25.0  | **40.6** |
 
+* Per Question Type Accuracy (**Mindspore**)
 ![](./assets/ms_result_per_question_type.png)
+
+* Per Question Type Accuracy (**PyTorch**)
+![](./assets/pt_result_per_question_type.png)
 
 ## File Directory
 
@@ -48,7 +56,7 @@ This repository contains a naive VQA model, which is our final project (**mindsp
 ## Prerequisite
 
 * Free disk space of at least 60GB
-* Nvidia GPU / Asend Platform
+* Nvidia GPU / Ascend Platform
 
 ## Quick Begin
 
