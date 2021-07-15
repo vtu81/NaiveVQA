@@ -1,15 +1,16 @@
 import sys
-import torch
+import json
+import numpy as np
 import matplotlib; matplotlib.use('agg')
 import matplotlib.pyplot as plt
 
 
 def main():
     path = sys.argv[1]
-    results = torch.load(path)
+    with open(path, 'r') as fp:
+        results=json.load(fp)
 
-    val_acc = torch.FloatTensor(results['tracker']['val_acc'])
-    val_acc = val_acc.mean(dim=1).numpy()
+    val_acc = np.array(results['accuracy'])
 
     plt.figure()
     plt.plot(val_acc)
