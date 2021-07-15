@@ -4,15 +4,25 @@ This repository contains a naive VQA model, which is our final project (**pytorc
 
 > Checkout branch `mindspore` for our **mindspore** implementation.
 
-### File Directory
+## Performance
+
+| Framework | Y/N  | Num  | Other | All  |
+| --------- | ---- | ---- | ----- | ---- |
+| **PyTorch**   | **66.3** | **24.5** | **25.0**  | **40.6** |
+| MindSpore | 62.2 | 7.5  | 2.4   | 25.8 |
+
+![](./assets/pt_result_per_question_type.png)
+
+## File Directory
 
 * `data/`
     * `annotations/` -- annotations data (ignored)
     * `images/` -- images data (ignored)
     * `questions/` -- questions data (ignored)
-    * `results/` -- now contains only a fake results, for evaluation demo at `PythonEvaluationTools/vqaEvalDemo.py`
+    * `results/` -- contains evaluation results when you evaluate a model with `./evaluate.ipynb`
     * `clean.py` -- a script to clean up `train.json` in both `data/annotations/` and `data/questions/`
-* `resnet/` -- resnet directory
+    * `align.py` -- a script to sort and align up the annotations and questions
+* `resnet/` -- resnet directory, cloned from [pytorch-resnet](https://github.com/Cyanogenoid/pytorch-resnet/tree/9332392b01317d57e92f81e00933c48f423ff503)
 * `logs/` -- should contain saved `.pth` model files
 * `config.py` -- global configure file
 * `train.py` -- training
@@ -20,12 +30,14 @@ This repository contains a naive VQA model, which is our final project (**pytorc
 * `val_acc.png` -- a demo for the accuracy\epoch figure
 * `model.py` -- the major model
 * `preprocess-image.py` -- preprocess the images, using ResNet152 to extract features for further usages
+* `preprocess-image-test.py` -- to extract images in the test set
 * `preprocess-vocab.py` -- preprocess the questions and annotations to get their vocabularies for further usages
 * `data.py` -- dataset, dataloader and data processing code
 * `utils.py` -- helper code
 * `evaluate.ipynb` -- evaluate a model and visualize the result
 * `finetune.ipynb` -- finetune a pretrained model
 * `cover_rate.ipynb` -- calculate the selected answers' coverage
+* `assets/`
 * `PythonHelperTools/` (currently not used)
     * `vqaDemo.py` -- a demo for VQA dataset APIs
     * `vqaTools/`
@@ -36,12 +48,14 @@ This repository contains a naive VQA model, which is our final project (**pytorc
 
 ### Prerequisite
 
-* Disk with available storage of at least 60GB
-* A piece of Nivida GPU
+* Free disk space of at least 60GB
+* Nvida GPU
 
-### Quick Begin
+## Quick Begin
 
-Get the VQA dataset from [here](https://drive.google.com/open?id=1_VvBqqxPW_5HQxE6alZ7_-SGwbEt2_zn). Unzip the file and move the subdirectories
+### Get and Prepare the Dataset
+
+Get our VQA dataset (a small subset of VQA 2.0) from [here](https://drive.google.com/open?id=1_VvBqqxPW_5HQxE6alZ7_-SGwbEt2_zn). Unzip the file and move the subdirectories
 
 * `annotations/`
 * `images/`
@@ -83,6 +97,10 @@ The scripts upon would
 * clean up your dataset (there are some images whose ids are referenced in the annotation & question files, while the images themselves don't exist!)
 * align the questions' ids for convenience while training
 
+### Preprocess Images
+
+> You actually don't have to preprocess the images yourself. We have prepared the prerocessed features file for you, feel free to download it through [here](https://e-share.obs-website.cn-north-1.myhuaweicloud.com?token=jA7oiibO5h2G1jmMINVC+oum3Lfah+Ut5bGgDFeTu5sI4zchCijmfATwP8KLRi9T5n7q00BW/bs2ugmV6RsBjmPdOUWaQEBJ0Fm0ND9DIrBCRfNNYmqbIH+Q2J0VgDY70KEHNOK3GW+0179M5NphG9YUSz9+JT3f4G3Jx4MLo6zky+l2nB6VdYLBxGspSx98Iq566+3aRL7NFJ/KbSRtUesX9iHSFJaFyBNNeyflZyzTQOmvs+xK17NWIeeJ7zdTuk/ojRn157m0m8uNzKg8+KQawvp53i/4y6kZ1qMh/ryBfjHsKIP18vz6OD0htixD66E/lr450IxpQHzqWp35Lixr8pptgrtBE4aWkcsvjTpupOfZdnqSzLY91QzCqU2578RDctILAb8mpvURWd7im2yUZUexBCsdCzp4HHUL1H3+C6UCTPe7XMDtz4yWhsZFATstbIHs6opMs3Ktp5/6HfA976nJJeJZnjLQp8NxwTVAoPUsckIxwFplhCIkpE38IrBq6mndpEP8G0VHLIKzYfDn6pS83JNzl4EPxknKkNL22OyWAge3ZC+Gh1mqrvCq) (the passcode is 'dl4nlp'). You should download the `resnet-14x14.h5` (42GB) file and place it at the repository root directory. Once you've done that, skip this chapter!
+
 **Preprocess the images** with:
 
 ```bash
@@ -94,6 +112,10 @@ python preprocess-images.py
 
 The output should be `./resnet-14x14.h5`.
 
+### Preprocess Vocabulary
+
+> The vocabulary only depends on the **train** set, as well as the `config.max_answers` (the number of selected candidate answers) you choose.
+
 **Preprocess the questions and annotations** to get their vocabularies with:
 
 ```bash
@@ -102,13 +124,17 @@ python preprocess-vocab.py
 
 The output should be `./vocab.json`.
 
+### Train
+
 Now, you can **train the model** with:
 
 ```bash
 python train.py
 ```
 
-During training, **view the training process** with:
+During training, a '.pth' file would be saved under `./logs`. It contains the model's parameters and some training metainfo records.
+
+**View the training process** with:
 
 ```bash
 python view-log.py <path to .pth log>
@@ -116,13 +142,27 @@ python view-log.py <path to .pth log>
 
 The output `val_acc.png` should look like this:
 
-![](./val_acc.png)
+![](./assets/val_acc.png)
 
-### More Things
+> To continue training from a pretrained model, set the correct `pretrained_model_path` and the `pretrained` to True in `config.py`.
 
-* To evaluate a trained model, check `evaluate.ipynb`.
-* To finetune a pretrained model, check `finetune.ipynb`.
-* To calculate the selected answers' cover rate (determined by `config.max_answer`), check `cover_rate.ipynb`.
+## Test Your Model
+
+Likewise, you need to preprocess the test set's images before testing. Run
+
+```bash
+python preprocess-images-test.py
+```
+
+to extract features from `test/images`. The output should be `./resnet-14x14-test.h5`.
+
+> Likewise, we have prepared the `resnet-14x14-test.h5` for you. Download it [here](https://e-share.obs-website.cn-north-1.myhuaweicloud.com?token=jA7oiibO5h2G1jmMINVC+oum3Lfah+Ut5bGgDFeTu5sI4zchCijmfATwP8KLRi9T5n7q00BW/bs2ugmV6RsBjmPdOUWaQEBJ0Fm0ND9DIrBCRfNNYmqbIH+Q2J0VgDY70KEHNOK3GW+0179M5NphG9YUSz9+JT3f4G3Jx4MLo6zky+l2nB6VdYLBxGspSx98Iq566+3aRL7NFJ/KbSRtUesX9iHSFJaFyBNNeyflZyzTQOmvs+xK17NWIeeJ7zdTuk/ojRn157m0m8uNzKg8+KQawvp53i/4y6kZ1qMh/ryBfjHsKIP18vz6OD0htixD66E/lr450IxpQHzqWp35Lixr8pptgrtBE4aWkcsvjTpupOfZdnqSzLY91QzCqU2578RDctILAb8mpvURWd7im2yUZUexBCsdCzp4HHUL1H3+C6UCTPe7XMDtz4yWhsZFATstbIHs6opMs3Ktp5/6HfA976nJJeJZnjLQp8NxwTVAoPUsckIxwFplhCIkpE38IrBq6mndpEP8G0VHLIKzYfDn6pS83JNzl4EPxknKkNL22OyWAge3ZC+Gh1mqrvCq) (the passcode is 'dl4nlp')
+
+We provide `evaluatie.ipynb` to test/evaluate the model. Open the notebook, and set the correct `eval_config`, you're good to go! Just run the following cell one by one, you should be able to **visualize the performance** of your trained model.
+
+## More Things
+
+* To calculate the selected answers' cover rate (determined by `config.max_answers`), check `cover_rate.ipynb`.
 
 ### Acknowledgement
 
