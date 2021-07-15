@@ -19,7 +19,7 @@ def get_loader(train=False, val=False, test=False):
     split = VQA(
         utils.path_for(train=train, val=val, test=test, question=True),
         utils.path_for(train=train, val=val, test=test, answer=True),
-        config.preprocessed_path,
+        config.preprocessed_path if not test else config.preprocessed_path_test,
         answerable_only=train,
     )
     loader = torch.utils.data.DataLoader(

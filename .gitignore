@@ -3,7 +3,7 @@ data/questions
 data/images
 *.pyc
 __pycache__
-resnet-14x14.h5
+*.h5
 vocab.json
 *.pth
 dump/*

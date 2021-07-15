@@ -5,6 +5,7 @@ train_path = 'data/images/train'  # directory of training images
 val_path = 'data/images/val'  # directory of validation images
 test_path = 'data/images/test'  # directory of test images
 preprocessed_path = './resnet-14x14.h5'  # path where preprocessed features are saved to and loaded from
+preprocessed_path_test = './resnet-14x14-test.h5'  # test set preprocessed features
 vocabulary_path = 'vocab.json'  # path where the used vocabularies for question and answers are saved to
 
 task = 'OpenEnded'
