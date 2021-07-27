@@ -1,4 +1,4 @@
-# NaiveVQA: Mindspore & PyTorch Implementations of a Strong VQA Baseline
+# NaiveVQA: MindSpore & PyTorch Implementations of a Strong VQA Baseline
 
 ![](https://visitor-badge.laobi.icu/badge?page_id=vtu.NaiveVQA)
 
@@ -17,7 +17,7 @@ git checkout pytorch
 | **MindSpore** | 62.2 | 7.5  | 2.4  | **25.8** |
 | **PyTorch**   | 66.3 | 24.5 | 25.0  | **40.6** |
 
-* Per Question Type Accuracy (**Mindspore**)
+* Per Question Type Accuracy (**MindSpore**)
 ![](./assets/ms_result_per_question_type.png)
 
 * Per Question Type Accuracy (**PyTorch**)
