@@ -1,4 +1,4 @@
-# NaiveVQA -- Mindspore Implementation
+# NaiveVQA: Mindspore & PyTorch Implementations of a Strong VQA Baseline
 
 ![](https://visitor-badge.laobi.icu/badge?page_id=vtu.NaiveVQA)
 
